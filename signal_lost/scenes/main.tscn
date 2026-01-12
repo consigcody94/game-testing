@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/anomaly_controller.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/environment/weather_effects.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="3"]
+[ext_resource type="Environment" path="res://default_env.tres" id="4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+sky_top_color = Color(0.1, 0.15, 0.25, 1)
+sky_horizon_color = Color(0.3, 0.35, 0.45, 1)
+ground_bottom_color = Color(0.05, 0.05, 0.08, 1)
+ground_horizon_color = Color(0.15, 0.18, 0.22, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." groups=["world_environment"]]
+environment = ExtResource("4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.433, 0.25, 0, 0.5, 0.866, -0.5, -0.75, 0.433, 10, 20, 10)
+light_color = Color(0.7, 0.75, 0.9, 1)
+light_energy = 0.3
+shadow_enabled = true
+shadow_bias = 0.02
+
+[node name="Player" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="AnomalyController" type="Node" parent="."]
+script = ExtResource("1")
+min_interval = 45.0
+max_interval = 150.0
+
+[node name="WeatherEffects" type="Node3D" parent="."]
+script = ExtResource("2")
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="AmbientLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+light_color = Color(0.6, 0.65, 0.8, 1)
+light_energy = 0.15
+light_indirect_energy = 0.5
+omni_range = 100.0
+omni_attenuation = 2.0
