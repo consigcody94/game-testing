@@ -1,11 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <rect width="128" height="128" fill="#1a2332"/>
-  <circle cx="64" cy="64" r="40" fill="none" stroke="#4a8fbd" stroke-width="3"/>
-  <circle cx="64" cy="64" r="25" fill="none" stroke="#4a8fbd" stroke-width="2"/>
-  <circle cx="64" cy="64" r="10" fill="none" stroke="#4a8fbd" stroke-width="2"/>
-  <line x1="64" y1="20" x2="64" y2="35" stroke="#7cb8e0" stroke-width="2"/>
-  <line x1="64" y1="93" x2="64" y2="108" stroke="#7cb8e0" stroke-width="2"/>
-  <line x1="20" y1="64" x2="35" y2="64" stroke="#7cb8e0" stroke-width="2"/>
-  <line x1="93" y1="64" x2="108" y2="64" stroke="#7cb8e0" stroke-width="2"/>
-  <text x="64" y="130" text-anchor="middle" font-family="monospace" font-size="10" fill="#4a8fbd">SIGNAL LOST</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" fill="#1a2332"/><circle cx="64" cy="64" r="40" fill="none" stroke="#4a8fbd" stroke-width="3"/><circle cx="64" cy="64" r="25" fill="none" stroke="#4a8fbd" stroke-width="2"/><circle cx="64" cy="64" r="10" fill="none" stroke="#4a8fbd" stroke-width="2"/><line x1="64" x2="64" y1="20" y2="35" stroke="#7cb8e0" stroke-width="2"/><line x1="64" x2="64" y1="93" y2="108" stroke="#7cb8e0" stroke-width="2"/><line x1="20" x2="35" y1="64" y2="64" stroke="#7cb8e0" stroke-width="2"/><line x1="93" x2="108" y1="64" y2="64" stroke="#7cb8e0" stroke-width="2"/><text x="64" y="130" fill="#4a8fbd" font-family="monospace" font-size="10" text-anchor="middle">SIGNAL LOST</text></svg>
