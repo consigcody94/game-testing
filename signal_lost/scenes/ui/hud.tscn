@@ -1,0 +1,135 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends CanvasLayer
+## HUD - Heads Up Display
+##
+## Shows:
+## - Interaction prompts
+## - Crosshair
+## - Stamina bar (when depleted)
+## - Frost overlay effect
+
+@onready var interaction_label: Label = $InteractionPrompt
+@onready var crosshair: Control = $Crosshair
+@onready var stamina_bar: ProgressBar = $StaminaBar
+@onready var frost_overlay: ColorRect = $FrostOverlay
+
+var frost_amount := 0.0
+var target_frost := 0.0
+
+
+func _ready() -> void:
+	# Connect to GameManager signals
+	GameManager.prompt_changed.connect(_on_prompt_changed)
+
+	# Find anomaly controller and connect
+	var anomaly = get_tree().get_first_node_in_group(\"anomaly_controller\")
+	if anomaly:
+		anomaly.anomaly_started.connect(_on_anomaly_started)
+		anomaly.anomaly_ended.connect(_on_anomaly_ended)
+
+	interaction_label.visible = false
+	stamina_bar.visible = false
+	frost_overlay.modulate.a = 0
+
+
+func _process(delta: float) -> void:
+	# Update frost effect
+	frost_amount = lerp(frost_amount, target_frost, delta * 2.0)
+	frost_overlay.modulate.a = frost_amount * 0.6
+
+	# Update stamina bar
+	var player = get_tree().get_first_node_in_group(\"player\")
+	if player and player.has_method(\"get_stamina_percent\"):
+		var stamina = player.get_stamina_percent()
+		if stamina < 1.0:
+			stamina_bar.visible = true
+			stamina_bar.value = stamina * 100
+		else:
+			stamina_bar.visible = false
+
+
+func _on_prompt_changed(text: String, visible: bool) -> void:
+	interaction_label.text = \"[E] \" + text if text else \"\"
+	interaction_label.visible = visible
+
+
+func _on_anomaly_started(type: String) -> void:
+	if type == \"cold\":
+		target_frost = 1.0
+
+
+func _on_anomaly_ended(type: String) -> void:
+	if type == \"cold\":
+		target_frost = 0.0
+"
+
+[node name="HUD" type="CanvasLayer"]
+script = SubResource("GDScript_1")
+
+[node name="Crosshair" type="Control" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dot" type="ColorRect" parent="Crosshair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.5)
+
+[node name="InteractionPrompt" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
+text = "[E] Interact"
+horizontal_alignment = 1
+
+[node name="StaminaBar" type="ProgressBar" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -40.0
+offset_right = 100.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 100.0
+show_percentage = false
+
+[node name="FrostOverlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.8, 0.85, 0.95, 1)
